@@ -7,37 +7,49 @@
   <link rel="stylesheet" href="/static/frontend-polish.css">
 </head>
 <body>
+  <a href="#mainContent" class="skip-link">Skip to main content</a>
   <div class="shell">
-    <aside class="sidebar">
-      <div class="brand"><div class="brand-mark">A</div><div><strong id="brandName">Air Quality Companion</strong><span>Location not selected</span></div></div>
-      <nav><button class="nav active" data-section="dashboard">◉ <span>Dashboard</span></button><button class="nav" data-section="calculator">▦ <span>Purifier Calculator</span></button><button class="nav" data-section="chat">◌ <span>Assistant</span></button></nav>
-      <div class="side-status"><span class="live-dot"></span><div><b>Live systems</b><small id="systemStatus">Checking…</small></div></div>
+    <aside class="sidebar" aria-label="Primary sidebar">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">A</div><div><strong id="brandName">Air Quality Companion</strong><span>Location not selected</span></div></div>
+      <nav aria-label="Main sections">
+        <button type="button" class="nav active" data-section="dashboard" aria-current="page"><span aria-hidden="true">◉</span> <span>Dashboard</span></button>
+        <button type="button" class="nav" data-section="calculator"><span aria-hidden="true">▦</span> <span>Purifier Calculator</span></button>
+        <button type="button" class="nav" data-section="chat"><span aria-hidden="true">◌</span> <span>Assistant</span></button>
+      </nav>
+      <div class="side-status" role="status" aria-live="polite"><span class="live-dot" aria-hidden="true"></span><div><b>Live systems</b><small id="systemStatus">Checking…</small></div></div>
     </aside>
 
-    <main>
-      <header><div><p class="eyebrow">URBAN AIR QUALITY</p><h1 id="pageTitle">Air quality overview</h1></div><div class="location"><span>⌖</span><input id="locationInput" value="" placeholder="Select / Enter Location" aria-label="Location"><button id="locationSearch" aria-label="Search location">→</button></div></header>
+    <main id="mainContent" tabindex="-1">
+      <header>
+        <div><p class="eyebrow">URBAN AIR QUALITY</p><h1 id="pageTitle">Air quality overview</h1></div>
+        <div class="location" role="search" aria-label="Search air quality by location">
+          <span aria-hidden="true">⌖</span>
+          <input id="locationInput" type="search" value="" placeholder="Select / Enter Location" aria-label="Location">
+          <button type="button" id="locationSearch" aria-label="Search location"><span aria-hidden="true">→</span></button>
+        </div>
+      </header>
 
-      <section id="dashboard" class="view active">
-        <div class="verification-banner" id="verificationBanner"><span aria-hidden="true">ⓘ</span><div><strong>Verification status</strong><small id="verificationText">Enter a location to retrieve live data. No reading is shown until verified.</small></div></div>
+      <section id="dashboard" class="view active" aria-labelledby="pageTitle">
+        <div class="verification-banner" id="verificationBanner" role="status" aria-live="polite"><span aria-hidden="true">ⓘ</span><div><strong>Verification status</strong><small id="verificationText">Enter a location to retrieve live data. No reading is shown until verified.</small></div></div>
         <button class="emergency-quick" id="emergencyQuick" type="button"><span aria-hidden="true">⚠</span><div><strong>P0 Emergency quick action</strong><small>CO alarm or severe breathing symptoms</small></div><b>View steps →</b></button>
         <div class="dashboard-grid">
-          <article class="card aq-card"><div class="card-head"><span>Air Quality Index</span><span id="scaleLabel">Live</span></div>
+          <article class="card aq-card" aria-live="polite"><div class="card-head"><span>Air Quality Index</span><span id="scaleLabel">Live</span></div>
             <div class="aq-main"><div class="aq-ring" id="aqRing"><div><strong id="aqiValue">—</strong><small>US AQI</small></div></div><div><span class="status-pill" id="aqStatus">Waiting</span><p id="aqAdvice">Search a location to see live conditions.</p></div></div>
             <div class="meta"><div><small>Source</small><b id="sourceName">—</b></div><div><small>Updated</small><b id="updatedTime">—</b></div></div>
           </article>
-          <article class="card pollutants"><div class="card-head"><span>Pollutant concentration</span><small>µg/m³</small></div><div id="pollutantGrid" class="pollutant-grid"></div></article>
+          <article class="card pollutants" aria-live="polite"><div class="card-head"><span>Pollutant concentration</span><small>µg/m³</small></div><div id="pollutantGrid" class="pollutant-grid"></div></article>
         </div>
-        <div class="bottom-grid"><article class="card"><div class="card-head"><span>Immediate protection</span></div><div id="protectionList" class="action-list"><div><i>01</i><p>Search your location for current guidance.</p></div></div></article>
-          <article class="card source-card"><div class="card-head"><span>Data provenance</span></div><dl><dt>Station</dt><dd id="stationName">Not queried</dd><dt>Scale</dt><dd id="scaleDetail">—</dd><dt>Coverage</dt><dd id="coverage">Awaiting data</dd></dl></article></div>
+        <div class="bottom-grid"><article class="card" aria-live="polite"><div class="card-head"><span>Immediate protection</span></div><div id="protectionList" class="action-list"><div><i aria-hidden="true">01</i><p>Search your location for current guidance.</p></div></div></article>
+          <article class="card source-card" aria-live="polite"><div class="card-head"><span>Data provenance</span></div><dl><dt>Station</dt><dd id="stationName">Not queried</dd><dt>Scale</dt><dd id="scaleDetail">—</dd><dt>Coverage</dt><dd id="coverage">Awaiting data</dd></dl></article></div>
       </section>
 
-      <section id="calculator" class="view"><div class="calculator-grid"><article class="card"><div class="card-head"><span>Room & purifier details</span></div><form id="calcForm"><div class="field-row"><label>Length<input type="number" id="length" min="0.1" step="any" value="5" required></label><label>Width<input type="number" id="width" min="0.1" step="any" value="4" required></label><label>Height<input type="number" id="height" min="0.1" step="any" value="3" required></label></div><div class="field-row"><label>Dimension unit<select id="lengthUnit"><option value="m">Metres</option><option value="ft">Feet</option></select></label><label>Purifier CADR<input type="number" id="cadr" min="0.1" step="any" value="300" required></label><label>CADR unit<select id="cadrUnit"><option value="m3/h">m³/h</option><option value="m3/min">m³/min</option><option value="cfm">CFM</option></select></label></div><button class="primary" type="submit">Calculate ACH</button></form></article>
-          <article class="card result-card"><div class="card-head"><span>Calculated performance</span></div><div class="result-main"><strong id="achValue">—</strong><span>ACH</span></div><div class="ach-status" id="achStatus"><span aria-hidden="true">○</span><b>Enter room and purifier details</b></div><div class="metric-list"><div class="metric-row"><span>Room volume</span><strong id="volumeValue">— m³</strong></div><div class="metric-row"><span>CADR</span><strong id="cadrValue">— m³/h</strong></div><div class="metric-row"><span>63% clean-air time</span><strong id="cleanTime">—</strong></div></div><p class="note" id="calcWarning">Enter real operating-speed CADR for the most useful estimate.</p></article></div></section>
+      <section id="calculator" class="view" aria-label="Purifier Calculator"><div class="calculator-grid"><article class="card"><div class="card-head"><span>Room & purifier details</span></div><form id="calcForm"><div class="field-row"><label for="length">Length<input type="number" id="length" min="0.1" step="any" value="5" required></label><label for="width">Width<input type="number" id="width" min="0.1" step="any" value="4" required></label><label for="height">Height<input type="number" id="height" min="0.1" step="any" value="3" required></label></div><div class="field-row"><label for="lengthUnit">Dimension unit<select id="lengthUnit"><option value="m">Metres</option><option value="ft">Feet</option></select></label><label for="cadr">Purifier CADR<input type="number" id="cadr" min="0.1" step="any" value="300" required></label><label for="cadrUnit">CADR unit<select id="cadrUnit"><option value="m3/h">m³/h</option><option value="m3/min">m³/min</option><option value="cfm">CFM</option></select></label></div><button class="primary" type="submit">Calculate ACH</button></form></article>
+          <article class="card result-card" aria-live="polite"><div class="card-head"><span>Calculated performance</span></div><div class="result-main"><strong id="achValue">—</strong><span>ACH</span></div><div class="ach-status" id="achStatus"><span aria-hidden="true">○</span><b>Enter room and purifier details</b></div><div class="metric-list"><div class="metric-row"><span>Room volume</span><strong id="volumeValue">— m³</strong></div><div class="metric-row"><span>CADR</span><strong id="cadrValue">— m³/h</strong></div><div class="metric-row"><span>63% clean-air time</span><strong id="cleanTime">—</strong></div></div><p class="note" id="calcWarning">Enter real operating-speed CADR for the most useful estimate.</p></article></div></section>
 
-      <section id="chat" class="view"><article class="card chat-card"><div class="chat-top"><div><span class="online"></span><b id="chatName">Air Quality Assistant</b><small>Evidence-aware indoor and outdoor guidance</small></div><button id="clearChat" class="ghost">Clear</button></div><div class="quick-prompts" aria-label="Suggested questions"><button type="button" data-prompt="Check safe indoor steps">Check safe indoor steps</button><button type="button" data-prompt="The CO alarm is sounding. What should I do?">CO alarm emergency</button><button type="button" data-prompt="How should mask fit work for kids?">Mask fit for kids</button></div><div id="chatMessages" class="messages"><div class="message bot"><span class="message-label">Assistant</span>I can help with air quality, clean-air rooms, filtration, and respirator guidance. Is this for a current location or emergency?</div></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="4000" placeholder="Ask about air quality or indoor protection…" aria-label="Message the air quality assistant" required><button type="submit" aria-label="Send message">↑</button></form></article></section>
+      <section id="chat" class="view" aria-label="Air Quality Assistant"><article class="card chat-card"><div class="chat-top"><div><span class="online" aria-hidden="true"></span><b id="chatName">Air Quality Assistant</b><small>Evidence-aware indoor and outdoor guidance</small></div><button type="button" id="clearChat" class="ghost" aria-label="Clear chat history">Clear</button></div><div class="quick-prompts" role="group" aria-label="Suggested questions"><button type="button" data-prompt="Check safe indoor steps">Check safe indoor steps</button><button type="button" data-prompt="The CO alarm is sounding. What should I do?">CO alarm emergency</button><button type="button" data-prompt="How should mask fit work for kids?">Mask fit for kids</button></div><div id="chatMessages" class="messages" role="log" aria-live="polite" aria-relevant="additions"><div class="message bot"><span class="message-label">Assistant</span>I can help with air quality, clean-air rooms, filtration, and respirator guidance. Is this for a current location or emergency?</div></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="4000" placeholder="Ask about air quality or indoor protection…" aria-label="Message the air quality assistant" required><button type="submit" aria-label="Send message"><span aria-hidden="true">↑</span></button></form></article></section>
     </main>
   </div>
-  <div id="emergencyBanner" class="emergency" role="alert" hidden></div>
+  <div id="emergencyBanner" class="emergency" role="alert" aria-live="assertive" hidden></div>
   <script src="/static/app.js"></script>
 </body>
 </html>
